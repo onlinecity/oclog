@@ -30,14 +30,12 @@ public:
 
 	}
 
-	void threadCerr(std::string cat, int timeout)
+	void threadCerr(int timeout)
 	{
 		sleep(timeout);
 		Log<CerrSink>::getLevel() = DEBUG;
-		OC_LOG(CerrSink,cat,DEBUG)
-		<< "Hello world 2";
-		OC_LOG(CerrSink,cat,ALERT)
-		<< "Hello world 3";
+		OC_LOG(CerrSink,"test1",DEBUG) << "Hello world 2";
+		OC_LOG(CerrSink,"test2",ALERT) << "Hello world 3";
 	}
 
 	void testThreadCerr()
@@ -46,33 +44,26 @@ public:
 		boost::thread_group threads;
 
 		for (int i = 0 ; i < 100 ; i++) {
-			threads.add_thread(new boost::thread(&ThreadTest::threadCerr, this, "Test", i % 20));
+			threads.add_thread(new boost::thread(&ThreadTest::threadCerr, this, 0));
 		}
 
 		threads.join_all();
 
 	}
 
-	void threadFile(std::string cat, int timeout)
+	void threadFile(int timeout)
 	{
 		sleep(timeout);
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 4";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 4";
 		Log<FileSink>("test2", "other.log").get() << "Hello World 5";
 		Log<FileSink>("test2").get() << "Hello World 6";
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 7";
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 8";
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 9";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 7";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 8";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 9";
 		Log<FileSink>::getLevel() = ERROR;
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 10";
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 11";
-		OC_LOG(FileSink,"test2",DEBUG)
-		<< "Hello world 12";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 10";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 11";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 12";
 	}
 
 	void testThreadFile()
@@ -80,20 +71,18 @@ public:
 		boost::thread_group threads;
 
 		for (int i = 0 ; i < 2000 ; i++) {
-			threads.add_thread(new boost::thread(&ThreadTest::threadFile, this, "Test", 0));
+			threads.add_thread(new boost::thread(&ThreadTest::threadFile, this, 0));
 		}
 
 		threads.join_all();
 
 	}
 
-	void threadScribe(std::string cat, int timeout)
+	void threadScribe(int timeout)
 	{
-		cout << "new thread" << endl;
 		sleep(timeout);
 		Log<ScribeSink>("test3").get() << "Hello World";
-		OC_LOG(ScribeSink, "test4", DEBUG)
-		<< "Test test";
+		OC_LOG(ScribeSink, "test4", DEBUG) << "Test test";
 	}
 
 	void testThreadScribe()
@@ -101,7 +90,7 @@ public:
 		boost::thread_group threads;
 
 		for (int i = 0 ; i < 1000 ; i++) {
-			threads.add_thread(new boost::thread(&ThreadTest::threadScribe, this, "Test", i % 3));
+			threads.add_thread(new boost::thread(&ThreadTest::threadScribe, this, i % 3));
 		}
 
 		threads.join_all();
@@ -112,11 +101,10 @@ public:
 	{
 	}
 
-CPPUNIT_TEST_SUITE(ThreadTest);
-//	CPPUNIT_TEST(testThreadCerr);
-//		CPPUNIT_TEST(testThreadFile);
-		CPPUNIT_TEST(testThreadScribe);
-
+	CPPUNIT_TEST_SUITE(ThreadTest);
+	CPPUNIT_TEST(testThreadCerr);
+	CPPUNIT_TEST(testThreadFile);
+	CPPUNIT_TEST(testThreadScribe);
 	CPPUNIT_TEST_SUITE_END();
 
 };
