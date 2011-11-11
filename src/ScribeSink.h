@@ -13,6 +13,7 @@
 #include <protocol/TBinaryProtocol.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/thread/mutex.hpp>
 #include "scribe_types.h"
 #include "scribe.h"
 #include <vector>
@@ -35,6 +36,7 @@ private:
 	boost::shared_ptr<TProtocol> protocol;
 	boost::shared_ptr<scribeClient> client;
 	std::vector<LogEntry> entries;
+	boost::mutex entrylock;
 
 public:
 
@@ -51,11 +53,18 @@ public:
 
 	~ScribeSink()
 	{
+		boost::mutex::scoped_lock lock(entrylock);
 		client->Log(entries);
 	}
 
 	void stream(std::string category, std::ostringstream& os)
 	{
+		static int i = 0;
+		if (++i % 10 == 0) {
+			boost::mutex::scoped_lock lock(entrylock);
+			client->Log(entries);
+			entries.clear();
+		}
 		os << std::flush;
 		LogEntry e;
 		e.__set_category(category);

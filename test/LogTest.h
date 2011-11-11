@@ -57,7 +57,20 @@ public:
 
 	void testScribeLog()
 	{
-		Log<ScribeSink>("test3").get() << "Hello World";
+		Log<ScribeSink>("test3").get() << "Hello World 13";
+		Log<ScribeSink>("test3").get() << "Hello World 14";
+		Log<ScribeSink>("test3").get() << "Hello World 15";
+		Log<ScribeSink>("test3").get() << "Hello World 16";
+		Log<ScribeSink>("test3").get() << "Hello World 17";
+		Log<ScribeSink>("test3").get() << "Hello World 18";
+		Log<ScribeSink>("test3").get() << "Hello World 19";
+		Log<ScribeSink>("test3").get() << "Hello World 20";
+		Log<ScribeSink>("test3").get() << "Hello World 21";
+		Log<ScribeSink>("test3").get() << "Hello World 22";
+		Log<ScribeSink>("test3").get() << "Hello World 23";
+		Log<ScribeSink>("test3").get() << "Hello World 24";
+		Log<ScribeSink>("test3").get() << "Hello World 16";
+		Log<ScribeSink>("test3").get() << "Hello World 17";
 	}
 
 	CPPUNIT_TEST_SUITE(LogTest);
