@@ -30,56 +30,70 @@ public:
 	 * Push an element to the queue.
 	 * @param data
 	 */
-	void push(T const& data)
-	{
-		boost::mutex::scoped_lock lock(the_mutex);
-		the_queue.push(data);
-		lock.unlock();
-		the_condition_variable.notify_one();
-	}
+	void push(T const& data);
 
 	/**
 	 * @return true if the queue is empty
 	 */
-	bool empty() const
-	{
-		boost::mutex::scoped_lock lock(the_mutex);
-		return the_queue.empty();
-	}
+	bool empty() const;
 
 	/**
 	 * Tries to pop the front of the queue. If successful the front is popped and true is returned.
 	 * @param popped_value
 	 * @return
 	 */
-	bool try_pop(T& popped_value)
-	{
-		boost::mutex::scoped_lock lock(the_mutex);
-		if (the_queue.empty()) {
-			return false;
-		}
-
-		popped_value = the_queue.front();
-		the_queue.pop();
-		return true;
-	}
+	bool try_pop(T& popped_value);
 
 	/**
 	 * Blocks until the front element for the queue can be popped.
 	 * @param popped_value
 	 */
-	void wait_and_pop(T& popped_value)
-	{
-		boost::mutex::scoped_lock lock(the_mutex);
-		while (the_queue.empty()) {
-			the_condition_variable.wait(lock);
-		}
-
-		popped_value = the_queue.front();
-		the_queue.pop();
-	}
+	void wait_and_pop(T& popped_value);
 
 };
+
+
+template<typename T>
+void SinkQueue<T>::push(T const& data)
+{
+	boost::mutex::scoped_lock lock(the_mutex);
+	the_queue.push(data);
+	lock.unlock();
+	the_condition_variable.notify_one();
+}
+
+template<typename T>
+bool SinkQueue<T>::empty() const
+{
+	boost::mutex::scoped_lock lock(the_mutex);
+	return the_queue.empty();
+}
+
+template<typename T>
+bool SinkQueue<T>::try_pop(T& popped_value)
+{
+	boost::mutex::scoped_lock lock(the_mutex);
+	if (the_queue.empty()) {
+		return false;
+	}
+
+	popped_value = the_queue.front();
+	the_queue.pop();
+	return true;
+}
+
+template<typename T>
+void SinkQueue<T>::wait_and_pop(T& popped_value)
+{
+	boost::mutex::scoped_lock lock(the_mutex);
+	while (the_queue.empty()) {
+		the_condition_variable.wait(lock);
+	}
+
+	popped_value = the_queue.front();
+	the_queue.pop();
+}
+
 } // log
 } // oc
 

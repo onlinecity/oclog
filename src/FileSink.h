@@ -26,27 +26,15 @@ private:
 
 public:
 
-	FileSink(std::string filename, std::string port) :
-			fs(new std::ofstream(filename != "" ? filename.c_str() : "debug.log", std::fstream::app | std::fstream::out))
-	{
-	}
+	FileSink(std::string filename, std::string port);
 
 	/**
 	 * The deconstructor closes the file.
 	 */
-	virtual ~FileSink()
-	{
-		if (fs->is_open()) fs->close();
-	}
+	virtual ~FileSink();
 
-	void stream(const std::string &category, const int &logLevel, std::ostringstream& os)
-	{
-		if (!fs->is_open()) throw std::runtime_error("FileStream closed");
-		if (fs->fail()) throw std::runtime_error("FileStream failed");
+	void stream(const std::string &category, const int &logLevel, std::ostringstream& os);
 
-		*fs << getTimeString() << " " << getLevelString(logLevel) << " " << category << ": " << os.str() << std::endl;
-
-	}
 };
 
 }

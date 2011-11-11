@@ -7,16 +7,34 @@ SET(headers
 	SinkQueue.h
 	LogLevel.h
 	macros.h
+    hexdump.h
+)
+
+SET(sources
+    Sink.cpp
+    ScribeSink.cpp
+    FileSink.cpp
+    hexdump.cpp
 )
 
 SET(scribeheaders
-    FacebookBase.h
-    FacebookService.h
-    fb303_constants.h
-    fb303_types.h
-    scribe_constants.h
-    scribe.h
-    scribe_types.h
+    ${CMAKE_SOURCE_DIR}/scribe/FacebookBase.h
+    ${CMAKE_SOURCE_DIR}/scribe/FacebookService.h
+    ${CMAKE_SOURCE_DIR}/scribe/fb303_constants.h
+    ${CMAKE_SOURCE_DIR}/scribe/fb303_types.h
+    ${CMAKE_SOURCE_DIR}/scribe/scribe_constants.h
+    ${CMAKE_SOURCE_DIR}/scribe/scribe.h
+    ${CMAKE_SOURCE_DIR}/scribe/scribe_types.h
+)
+
+SET(scribesources
+    ${CMAKE_SOURCE_DIR}/scribe/FacebookBase.cpp
+    ${CMAKE_SOURCE_DIR}/scribe/FacebookService.cpp
+    ${CMAKE_SOURCE_DIR}/scribe/fb303_constants.cpp
+    ${CMAKE_SOURCE_DIR}/scribe/fb303_types.cpp
+    ${CMAKE_SOURCE_DIR}/scribe/scribe_constants.cpp
+    ${CMAKE_SOURCE_DIR}/scribe/scribe.cpp
+    ${CMAKE_SOURCE_DIR}/scribe/scribe_types.cpp
 )
 
 # FindBoost
@@ -24,7 +42,7 @@ SET(Boost_USE_STATIC_LIBS OFF) # Or we get errors with -fPIC
 SET(Boost_USE_MULTITHREADED ON)
 SET(Boost_USE_STATIC_RUNTIME OFF)
 
-FIND_PACKAGE(Boost 1.41 COMPONENTS date_time system filesystem REQUIRED)
+FIND_PACKAGE(Boost 1.41 COMPONENTS date_time system filesystem thread REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 # LibEvent
@@ -43,11 +61,10 @@ include_directories(${CMAKE_SOURCE_DIR}/scribe)
 
 INCLUDE_DIRECTORIES(${SCRIBE_INCLUDE_DIR})
 
-ADD_LIBRARY(oclog SHARED ${headers} ${sources})
-SET_TARGET_PROPERTIES(oclog PROPERTIES VERSION 1.0.0 SOVERSION 1 PUBLIC_HEADER "${headers} ${scribeheaders}" )
+ADD_LIBRARY(oclog SHARED ${headers} ${scribeheaders} ${sources} ${scribesources})
+SET_TARGET_PROPERTIES(oclog PROPERTIES VERSION 1.0.0 SOVERSION 1 PUBLIC_HEADER "${headers}" PRIVATE_HEADER "${scribeheaders}" )
 TARGET_LINK_LIBRARIES(oclog
     ${Boost_LIBRARIES}
-    scribe_if 
     ${EVENT_LIB}
     ${THRIFT_LIB}
     ${THRIFT_NB_LIB}
@@ -55,4 +72,8 @@ TARGET_LINK_LIBRARIES(oclog
 	
 SET(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
 SET(CMAKE_INSTALL_HEADERDIR include CACHE PATH "Output directory for headers")
-INSTALL(TARGETS oclog LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_HEADERDIR}/oclog)
+INSTALL(TARGETS oclog 
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} 
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_HEADERDIR}/oclog
+    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_HEADERDIR}/oclog
+)
