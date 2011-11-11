@@ -18,6 +18,7 @@
 #include "scribe.h"
 #include <vector>
 #include "Sink.h"
+#include "SinkQueue.h"
 
 using namespace apache::thrift;
 using namespace apache::thrift::transport;
@@ -35,15 +36,14 @@ private:
 	boost::shared_ptr<TTransport> transport;
 	boost::shared_ptr<TProtocol> protocol;
 	boost::shared_ptr<scribeClient> client;
-	std::vector<LogEntry> entries;
-	boost::mutex entrylock;
+	boost::mutex mutex;
+	SinkQueue<LogEntry> entryQueue;
 
 public:
 
 	ScribeSink(std::string hostname, std::string port) :
 					socket(
-							new TSocket(hostname != "" ? hostname : "127.0.0.1",
-									port != "" ? boost::lexical_cast<int>(port) : 1463)),
+							new TSocket(hostname != "" ? hostname : "127.0.0.1", port != "" ? boost::lexical_cast<int>(port) : 1463)),
 					transport(new TFramedTransport(socket)),
 					protocol(new TBinaryProtocol(transport)),
 					client(new scribeClient(protocol))
@@ -53,7 +53,15 @@ public:
 
 	~ScribeSink()
 	{
-		boost::mutex::scoped_lock lock(entrylock);
+		std::vector<LogEntry> entries;
+		LogEntry log;
+
+		while (!entryQueue.empty()) {
+			entryQueue.wait_and_pop(log);
+			entries.push_back(log);
+		}
+
+		boost::mutex::scoped_lock lock(mutex);
 		client->Log(entries);
 	}
 
@@ -61,15 +69,21 @@ public:
 	{
 		static int i = 0;
 		if (++i % 10 == 0) {
-			boost::mutex::scoped_lock lock(entrylock);
+
+			std::vector<LogEntry> entries;
+			LogEntry log;
+
+			while (!entryQueue.empty() && entryQueue.try_pop(log)) {
+				entries.push_back(log);
+			}
+			boost::mutex::scoped_lock lock(mutex);
 			client->Log(entries);
-			entries.clear();
 		}
 		os << std::flush;
 		LogEntry e;
 		e.__set_category(category);
 		e.__set_message(os.str());
-		entries.push_back(e);
+		entryQueue.push(e);
 	}
 };
 

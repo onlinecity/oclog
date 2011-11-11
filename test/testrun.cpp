@@ -3,8 +3,10 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "LogTest.h"
+#include "ThreadTest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LogTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(ThreadTest);
 
 int main(int argc, char **argv)
 {

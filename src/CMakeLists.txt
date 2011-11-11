@@ -4,6 +4,7 @@ SET(headers
 	FileSink.h
 	CerrSink.h
 	ScribeSink.h
+	SinkQueue.h
 )
 
 SET(sources

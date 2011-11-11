@@ -1,5 +1,6 @@
 set(unitheaders
 	LogTest.h
+	ThreadTest.h
 )
 
 SET(Boost_USE_STATIC_LIBS OFF) # Or we get errors with -fPIC
