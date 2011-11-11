@@ -15,6 +15,7 @@
 #include "FileSink.h"
 #include "ScribeSink.h"
 #include "LogLevel.h"
+#include "macros.h"
 
 #include <map>
 #include <boost/shared_ptr.hpp>
