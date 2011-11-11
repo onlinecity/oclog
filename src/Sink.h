@@ -35,10 +35,12 @@ public:
 		boost::gregorian::date d = pt.date();
 		boost::posix_time::time_duration td = pt.time_of_day();
 		double fracsecs = (boost::numeric_cast<double,long>(td.fractional_seconds())/1000000)+td.seconds();
-		ss << boost::gregorian::to_iso_extended_string(d) << "T"
-				<< std::setfill('0') << std::setw(2) << td.hours() << ":"
-				<< std::setfill('0') << std::setw(2) << td.minutes() << ":"
-				<< std::setfill('0') << std::setw(5) << std::fixed << std::setprecision(2) << fracsecs;
+		ss 	<< std::setfill('0') << std::setw(2) << d.year() << "-"
+			<< std::setfill('0') << std::setw(2) << static_cast<int>(d.month()) << "-"
+			<< std::setfill('0') << std::setw(2) << d.day() << "T"
+			<< std::setfill('0') << std::setw(2) << td.hours() << ":"
+			<< std::setfill('0') << std::setw(2) << td.minutes() << ":"
+			<< std::setfill('0') << std::setw(5) << std::fixed << std::setprecision(2) << fracsecs;
 		return ss.str();
 	}
 
