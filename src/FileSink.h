@@ -36,7 +36,7 @@ public:
 	void stream(std::string category, std::ostringstream& os)
 	{
 		if (!fs->is_open() || fs->fail()) throw std::runtime_error("FileStream failed");
-		*fs << category << ": " << os.str() << std::endl;
+		*fs << getTimeString() << " " << category << ": " << os.str() << std::endl;
 	}
 };
 

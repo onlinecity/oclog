@@ -67,10 +67,10 @@ template <class T>
 boost::shared_ptr<T> Log<T>::getSink(std::string name, std::string port)
 {
 	static SinkMap sinks = SinkMap();
-	SinkIterator it = sinks.find(name);
+	SinkIterator it = sinks.find(name+port);
 	if (sinks.empty() || it == sinks.end()) {
-		sinks.insert(SinkPair(name, boost::shared_ptr<T>(new T(name, port))));
-		it = sinks.find(name);
+		sinks.insert(SinkPair(name+port, boost::shared_ptr<T>(new T(name, port))));
+		it = sinks.find(name+port);
 	}
 	return (*it).second;
 }

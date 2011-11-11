@@ -82,7 +82,7 @@ public:
 		os << std::flush;
 		LogEntry e;
 		e.__set_category(category);
-		e.__set_message(os.str());
+		e.__set_message(getTimeString() + " " + os.str());
 		entryQueue.push(e);
 	}
 };

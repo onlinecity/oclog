@@ -25,7 +25,7 @@ public:
 
 	void stream(std::string category, std::ostringstream& os)
 	{
-		std::cerr << category << ": " << os.str() << std::endl;
+		std::cerr << getTimeString() << " " << category << ": " << os.str() << std::endl;
 	}
 
 	~CerrSink()

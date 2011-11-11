@@ -9,6 +9,10 @@
 
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 namespace oc {
 namespace log {
@@ -24,6 +28,19 @@ public:
 
 	}
 
+	std::string getTimeString()
+	{
+		std::stringstream ss;
+		boost::posix_time::ptime pt = boost::posix_time::microsec_clock::universal_time();
+		boost::gregorian::date d = pt.date();
+		boost::posix_time::time_duration td = pt.time_of_day();
+		double fracsecs = (boost::numeric_cast<double,long>(td.fractional_seconds())/1000000)+td.seconds();
+		ss << boost::gregorian::to_iso_extended_string(d) << "T"
+				<< std::setfill('0') << std::setw(2) << td.hours() << ":"
+				<< std::setfill('0') << std::setw(2) << td.minutes() << ":"
+				<< std::setfill('0') << std::setw(5) << std::fixed << std::setprecision(2) << fracsecs;
+		return ss.str();
+	}
 
 };
 
