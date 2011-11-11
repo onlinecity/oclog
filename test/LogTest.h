@@ -42,9 +42,17 @@ public:
 
 	void testFileLog()
 	{
+
 		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 4";
 		Log<FileSink>("test2","other.log").get() << "Hello World 5";
 		Log<FileSink>("test2").get() << "Hello World 6";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 7";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 8";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 9";
+		Log<FileSink>::getLevel() = ERROR;
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 10";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 11";
+		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 12";
 	}
 
 	void testScribeLog()

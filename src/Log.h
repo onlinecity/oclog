@@ -11,6 +11,9 @@
 #include <string>
 #include <sstream>
 #include "Sink.h"
+#include "CerrSink.h"
+#include "FileSink.h"
+#include "ScribeSink.h"
 
 #include <map>
 #include <boost/shared_ptr.hpp>

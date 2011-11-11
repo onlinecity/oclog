@@ -26,7 +26,6 @@ public:
 	FileSink(std::string filename, std::string port) :
 			fs(new std::ofstream(filename != "" ? filename.c_str() : "debug.log", std::fstream::app | std::fstream::out))
 	{
-
 	}
 
 	~FileSink()

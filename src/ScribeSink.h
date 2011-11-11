@@ -13,8 +13,8 @@
 #include <protocol/TBinaryProtocol.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/lexical_cast.hpp>
-#include <scribe_if/scribe_types.h>
-#include <scribe_if/scribe.h>
+#include "scribe_types.h"
+#include "scribe.h"
 #include <vector>
 #include "Sink.h"
 
@@ -30,9 +30,9 @@ class ScribeSink: public Sink
 {
 
 private:
-	boost::shared_ptr<TSocket> socket;
-	boost::shared_ptr<TFramedTransport> transport;
-	boost::shared_ptr<TBinaryProtocol> protocol;
+	boost::shared_ptr<TTransport> socket;
+	boost::shared_ptr<TTransport> transport;
+	boost::shared_ptr<TProtocol> protocol;
 	boost::shared_ptr<scribeClient> client;
 	std::vector<LogEntry> entries;
 
