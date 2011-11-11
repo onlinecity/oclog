@@ -8,14 +8,15 @@
 #define OCMACROS_H_
 
 #include "Log.h"
+#include "LogLevel.h"
 
 #ifndef OC_LOG_MAX_LEVEL
-#define OC_LOG_MAX_LEVEL oc::log::DEBUG
+#define OC_LOG_MAX_LEVEL oc::log::LOG_DEBUG
 #endif
 
 #define OC_LOG(sinktype,category,level) \
     if (level > OC_LOG_MAX_LEVEL) ;\
     else if (level > oc::log::Log<sinktype>::getLevel()) ; \
-    else oc::log::Log<sinktype>(category).get()
+    else oc::log::Log<sinktype>(category, level).get()
 
 #endif /* OCMACROS_H_ */

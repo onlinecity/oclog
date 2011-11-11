@@ -1,3 +1,8 @@
+/*
+ * Copy/pasted from:
+ * http://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
+ */
+
 #ifndef SINKQUEUE_H_
 #define SINKQUEUE_H_
 
@@ -8,15 +13,23 @@
 namespace oc {
 namespace log {
 
-template<typename Data>
+/**
+ * SinkQueue is a threadsafe queue. It encapsulates the std::queue with mutex locks.
+ */
+template<typename T>
 class SinkQueue
 {
 private:
-	std::queue<Data> the_queue;
+	std::queue<T> the_queue;
 	mutable boost::mutex the_mutex;
 	boost::condition_variable the_condition_variable;
+
 public:
-	void push(Data const& data)
+	/**
+	 * Push an element to the queue.
+	 * @param data
+	 */
+	void push(T const& data)
 	{
 		boost::mutex::scoped_lock lock(the_mutex);
 		the_queue.push(data);
@@ -24,13 +37,21 @@ public:
 		the_condition_variable.notify_one();
 	}
 
+	/**
+	 * @return true if the queue is empty
+	 */
 	bool empty() const
 	{
 		boost::mutex::scoped_lock lock(the_mutex);
 		return the_queue.empty();
 	}
 
-	bool try_pop(Data& popped_value)
+	/**
+	 * Tries to pop the front of the queue. If successful the front is popped and true is returned.
+	 * @param popped_value
+	 * @return
+	 */
+	bool try_pop(T& popped_value)
 	{
 		boost::mutex::scoped_lock lock(the_mutex);
 		if (the_queue.empty()) {
@@ -42,7 +63,11 @@ public:
 		return true;
 	}
 
-	void wait_and_pop(Data& popped_value)
+	/**
+	 * Blocks until the front element for the queue can be popped.
+	 * @param popped_value
+	 */
+	void wait_and_pop(T& popped_value)
 	{
 		boost::mutex::scoped_lock lock(the_mutex);
 		while (the_queue.empty()) {

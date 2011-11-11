@@ -35,42 +35,42 @@ public:
 //		OCLOG(DEBUG) << "Hello world";
 //		oc::log::Log<oc::log::CerrSink>("test1").get() << "Hello world";
 
-		Log<CerrSink>::getLevel() = DEBUG;
-		OC_LOG(CerrSink,"test1",DEBUG) << "Hello world 2";
-		OC_LOG(CerrSink,"test1",ALERT) << "Hello world 3";
+		Log<CerrSink>::getLevel() = LOG_DEBUG;
+		OC_LOG(CerrSink,"test1",LOG_DEBUG) << "Hello world 2";
+		OC_LOG(CerrSink,"test1",LOG_ALERT) << "Hello world 3";
 	}
 
 	void testFileLog()
 	{
 
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 4";
-		Log<FileSink>("test2","other.log").get() << "Hello World 5";
-		Log<FileSink>("test2").get() << "Hello World 6";
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 7";
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 8";
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 9";
-		Log<FileSink>::getLevel() = ERROR;
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 10";
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 11";
-		OC_LOG(FileSink,"test2",DEBUG) << "Hello world 12";
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 4";
+		Log<FileSink>("test2", LOG_DEBUG,"other.log").get() << "Hello World 5";
+		Log<FileSink>("test2", LOG_DEBUG).get() << "Hello World 6";
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 7";
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 8";
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 9";
+		Log<FileSink>::getLevel() = LOG_ERROR;
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 10";
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 11";
+		OC_LOG(FileSink,"test2",LOG_DEBUG) << "Hello world 12";
 	}
 
 	void testScribeLog()
 	{
-		Log<ScribeSink>("test3").get() << "Hello World 13";
-		Log<ScribeSink>("test3").get() << "Hello World 14";
-		Log<ScribeSink>("test3").get() << "Hello World 15";
-		Log<ScribeSink>("test3").get() << "Hello World 16";
-		Log<ScribeSink>("test3").get() << "Hello World 17";
-		Log<ScribeSink>("test3").get() << "Hello World 18";
-		Log<ScribeSink>("test3").get() << "Hello World 19";
-		Log<ScribeSink>("test3").get() << "Hello World 20";
-		Log<ScribeSink>("test3").get() << "Hello World 21";
-		Log<ScribeSink>("test3").get() << "Hello World 22";
-		Log<ScribeSink>("test3").get() << "Hello World 23";
-		Log<ScribeSink>("test3").get() << "Hello World 24";
-		Log<ScribeSink>("test3").get() << "Hello World 16";
-		Log<ScribeSink>("test3").get() << "Hello World 17";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 13";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 14";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 15";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 16";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 17";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 18";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 19";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 20";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 21";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 22";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 23";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 24";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 16";
+		Log<ScribeSink>("test3", LOG_DEBUG).get() << "Hello World 17";
 	}
 
 	CPPUNIT_TEST_SUITE(LogTest);

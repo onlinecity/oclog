@@ -14,18 +14,20 @@
 namespace oc {
 namespace log {
 
+/**
+ * The CerrSink writes its output to std::cerr.
+ */
 class CerrSink: public Sink
 {
 public:
-
-	CerrSink(std::string name="", std::string port="")
+	CerrSink(std::string name = "", std::string port = "")
 	{
 
 	}
 
-	void stream(std::string category, std::ostringstream& os)
+	void stream(const std::string &category, const int &logLevel, std::ostringstream& os)
 	{
-		std::cerr << getTimeString() << " " << category << ": " << os.str() << std::endl;
+		std::cerr << getTimeString() << " " << getLevelString(logLevel) << " " << category << ": " << os.str() << std::endl;
 	}
 
 	~CerrSink()
@@ -36,6 +38,5 @@ public:
 
 } // log
 } // oc
-
 
 #endif /* CERRSINK_H_ */

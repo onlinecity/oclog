@@ -16,6 +16,9 @@
 namespace oc {
 namespace log {
 
+/**
+ * The FileSink appends its output to a file. If a filename is omitted, the FileSink writes to the file "debug.log".
+ */
 class FileSink: public Sink
 {
 private:
@@ -28,15 +31,21 @@ public:
 	{
 	}
 
-	~FileSink()
+	/**
+	 * The deconstructor closes the file.
+	 */
+	virtual ~FileSink()
 	{
 		if (fs->is_open()) fs->close();
 	}
 
-	void stream(std::string category, std::ostringstream& os)
+	void stream(const std::string &category, const int &logLevel, std::ostringstream& os)
 	{
-		if (!fs->is_open() || fs->fail()) throw std::runtime_error("FileStream failed");
-		*fs << getTimeString() << " " << category << ": " << os.str() << std::endl;
+		if (!fs->is_open()) throw std::runtime_error("FileStream closed");
+		if (fs->fail()) throw std::runtime_error("FileStream failed");
+
+		*fs << getTimeString() << " " << getLevelString(logLevel) << " " << category << ": " << os.str() << std::endl;
+
 	}
 };
 

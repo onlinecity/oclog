@@ -28,6 +28,11 @@ using namespace scribe::thrift;
 namespace oc {
 namespace log {
 
+/**
+ * ScribeSink logs its output to a scribe server.
+ * It uses an FIFO queue and it flushes on every 10 entries or on dtor.
+ * Uses mutex locking for thread synchronisation. Connects to 127.0.0.1:1463 if hostname and port is omitted.
+ */
 class ScribeSink: public Sink
 {
 
@@ -65,7 +70,7 @@ public:
 		client->Log(entries);
 	}
 
-	void stream(std::string category, std::ostringstream& os)
+	void stream(const std::string &category, const int &logLevel, std::ostringstream& os)
 	{
 		static int i = 0;
 		if (++i % 10 == 0) {
@@ -79,10 +84,11 @@ public:
 			boost::mutex::scoped_lock lock(mutex);
 			client->Log(entries);
 		}
+
 		os << std::flush;
 		LogEntry e;
 		e.__set_category(category);
-		e.__set_message(getTimeString() + " " + os.str());
+		e.__set_message(getTimeString() + " " + getLevelString(logLevel) + " " +  os.str());
 		entryQueue.push(e);
 	}
 };

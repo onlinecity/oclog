@@ -5,10 +5,7 @@ SET(headers
 	CerrSink.h
 	ScribeSink.h
 	SinkQueue.h
-)
-
-SET(sources
-    Log.cpp
+	LogLevel.h
 )
 
 # FindBoost
