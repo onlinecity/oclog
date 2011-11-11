@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2008 Just Software Solutions Ltd.
  * Copy/pasted from:
  * http://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
  */
