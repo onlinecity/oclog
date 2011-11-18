@@ -65,38 +65,42 @@ public:
 		uint8_t data[] = "hello world hello world hello world";
 		string expected = "00000000  68 65 6c 6c 6f 20 77 6f  72 6c 64 20 68 65 6c 6c  |hello world hell|\n"
 				"00000010  6f                                                |o|\n"
-				"00000011";
+				"00000011\n";
 		CPPUNIT_ASSERT_EQUAL(expected, hexdump(data, 17));
 	}
 
-//	void test
+	void test25()
+	{
+		uint8_t data[] = "hello world hello world hello world";
+		string expected = "00000000  68 65 6c 6c 6f 20 77 6f  72 6c 64 20 68 65 6c 6c  |hello world hell|\n"
+				"00000010  6f 20 77 6f 72 6c 64 20  68                       |o world h|\n"
+				"00000019\n";
+
+		CPPUNIT_ASSERT_EQUAL(expected, hexdump(data, 25));
+	}
 
 	void testDump()
 	{
 		uint8_t data[] = "hello world hello world hello world";
 		string expected = "00000000  68 65 6c 6c 6f 20 77 6f  72 6c 64 20 68 65 6c 6c  |hello world hell|\n"
 				"00000010  6f 20 77 6f 72 6c 64 20  68 65 6c 6c 6f 20 77 6f  |o world hello wo|\n"
-				"00000020  72 6c 64 0a                                       |rld.|\n"
+				"00000020  72 6c 64 00                                       |rld.|\n"
 				"00000024\n";
 
-
 		CPPUNIT_ASSERT_EQUAL(expected, hexdump(data, 0x24));
-
-		cout << endl;
-		cout << expected << endl;
-
 	}
 
-		CPPUNIT_TEST_SUITE(HexDumpTest);
+CPPUNIT_TEST_SUITE(HexDumpTest);
 
 		CPPUNIT_TEST(test7);
 		CPPUNIT_TEST(test8);
 		CPPUNIT_TEST(test9);
 		CPPUNIT_TEST(test16);
 		CPPUNIT_TEST(test17);
+		CPPUNIT_TEST(test25);
 		CPPUNIT_TEST(testDump);
 
-		CPPUNIT_TEST_SUITE_END();
+	CPPUNIT_TEST_SUITE_END();
 
 };
 

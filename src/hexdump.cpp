@@ -44,7 +44,7 @@ std::string oc::log::hexdump(uint8_t *bytes, const size_t &length)
 		out << hex << setfill('0') << setw(2) << static_cast<unsigned int>(curbyte) << " ";
 
 		// If byte is within printable range of ascii (0x20-0x7F) add it as is, otherwise add a . char.
-		asciibytes[pos % 16] = (curbyte >= 0x20 && curbyte <= 0x7F) ? curbyte : ".";
+		asciibytes[pos % 16] = (curbyte >= 0x20 && curbyte <= 0x7F) ? curbyte : '.';
 	}
 
 	// Print padding + ascii chars + endl
