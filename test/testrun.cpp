@@ -4,6 +4,7 @@
 
 #include "LogTest.h"
 #include "ThreadTest.h"
+#include "HexDumpTest.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LogTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(ThreadTest);
