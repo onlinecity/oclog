@@ -8,6 +8,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LogTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(ThreadTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(HexDumpTest);
 
 int main(int argc, char **argv)
 {

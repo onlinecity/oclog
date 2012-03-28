@@ -24,8 +24,3 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 add_executable(unittest ${unitheaders} testrun.cpp)
 target_link_libraries(unittest cppunit oclog ${Boost_LIBRARIES})
 add_test(cpp-unit-test unittest)
-
-add_executable(hexdump_unit ${unitheaders} testrun_hexdump.cpp)
-target_link_libraries(hexdump_unit cppunit oclog ${Boost_LIBRARIES})
-add_test(hexdump hexdump_unit)
-
